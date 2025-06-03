@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Anpat</title>
+</head>
+<body>
+  <h1>Admin - Panggil Nomor</h1>
+  <p>Nomor sekarang: <span id="nomor">1</span></p>
+  <button id="next">Panggil Selanjutnya</button>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCJRFTrRqF2Fi_gx7Z9YaCTlWi91Y_awk",
+      authDomain: "anpat-9409c.firebaseapp.com",
+      databaseURL: "https://anpat-9409c-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "anpat-9409c",
+      storageBucket: "anpat-9409c.appspot.com",
+      messagingSenderId: "648747908613",
+      appId: "1:648747908613:web:e16e4f6997fc4d3f22e66c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const nomorSpan = document.getElementById("nomor");
+    const nextBtn = document.getElementById("next");
+
+    async function getCurrentNumber() {
+      const snapshot = await get(child(ref(db), "antrian/nomorSekarang"));
+      return snapshot.exists() ? snapshot.val() : 1;
+    }
+
+    async function updateNumber() {
+      let current = await getCurrentNumber();
+      current += 1;
+      nomorSpan.textContent = current;
+      await set(ref(db, "antrian/nomorSekarang"), current);
+    }
+
+    nextBtn.addEventListener("click", updateNumber);
+  </script>
+</body>
+</html>

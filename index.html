@@ -1,13 +1,35 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anpat - Pilih Mode</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anpat - Ambil Nomor</title>
 </head>
 <body>
-  <h1>Selamat Datang di Anpat</h1>
-  <a href="main.html?mode=user"><button>Masuk sebagai Pengguna</button></a>
-  <a href="main.html?mode=admin"><button>Masuk sebagai Admin</button></a>
+  <h1>Selamat datang di Anpat!</h1>
+  <p>Nomor antrian saat ini: <span id="nomor-sekarang">...</span></p>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCJRFTrRqF2Fi_gx7Z9YaCTlWi91Y_awk",
+      authDomain: "anpat-9409c.firebaseapp.com",
+      databaseURL: "https://anpat-9409c-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "anpat-9409c",
+      storageBucket: "anpat-9409c.appspot.com",
+      messagingSenderId: "648747908613",
+      appId: "1:648747908613:web:e16e4f6997fc4d3f22e66c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const nomorEl = document.getElementById("nomor-sekarang");
+    onValue(ref(db, "antrian/nomorSekarang"), (snapshot) => {
+      nomorEl.textContent = snapshot.val() ?? "Belum tersedia";
+    });
+  </script>
 </body>
 </html>
