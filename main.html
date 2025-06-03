@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anpat - Antrean</title>
+  <script type="module" src="script.js"></script>
+</head>
+<body>
+  <h2 id="mode-title"></h2>
+  <div id="user-section" style="display:none;">
+    <button onclick="ambilNomor()">Ambil Nomor</button>
+    <p>Nomor Anda: <span id="nomor-user">-</span></p>
+  </div>
+  <div id="admin-section" style="display:none;">
+    <button onclick="panggilBerikut()">Panggil Berikut</button>
+    <button onclick="resetAntrian()">Reset</button>
+  </div>
+  <h3>Nomor Saat Ini: <span id="nomor-sekarang">0</span></h3>
+</body>
+</html>

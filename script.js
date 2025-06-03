@@ -1,30 +1,33 @@
-
-function ambilAntrian() {
-  let nomor = localStorage.getItem("nomor") || 0;
-  nomor++;
-  localStorage.setItem("nomor", nomor);
-  document.getElementById("nomorSekarang").innerText = "Nomor Anda: " + nomor;
+let current = parseInt(localStorage.getItem("current")) || 0;
+let last = parseInt(localStorage.getItem("last")) || 0;
+const mode = new URLSearchParams(window.location.search).get("mode");
+document.getElementById("mode-title").innerText = mode === "admin" ? "Admin Mode" : "User Mode";
+if (mode === "admin") {
+  document.getElementById("admin-section").style.display = "block";
+} else {
+  document.getElementById("user-section").style.display = "block";
 }
 
-function resetAntrian() {
-  localStorage.setItem("nomor", 0);
-  localStorage.setItem("dipanggil", 0);
-  document.getElementById("nomorTerakhir").innerText = "0";
-  document.getElementById("nomorDipanggil").innerText = "";
+function ambilNomor() {
+  last++;
+  localStorage.setItem("last", last);
+  document.getElementById("nomor-user").innerText = last;
 }
-
-function panggilSelanjutnya() {
-  let dipanggil = parseInt(localStorage.getItem("dipanggil") || 0) + 1;
-  let total = localStorage.getItem("nomor") || 0;
-  if (dipanggil <= total) {
-    localStorage.setItem("dipanggil", dipanggil);
-    document.getElementById("nomorDipanggil").innerText = "Memanggil nomor: " + dipanggil;
-    document.getElementById("nomorTerakhir").innerText = total;
-  } else {
-    document.getElementById("nomorDipanggil").innerText = "Semua nomor sudah dipanggil.";
+function panggilBerikut() {
+  if (current < last) {
+    current++;
+    localStorage.setItem("current", current);
+    updateDisplay();
   }
 }
-
-window.onload = () => {
-  document.getElementById("nomorTerakhir").innerText = localStorage.getItem("nomor") || 0;
-};
+function resetAntrian() {
+  current = 0;
+  last = 0;
+  localStorage.setItem("current", 0);
+  localStorage.setItem("last", 0);
+  updateDisplay();
+}
+function updateDisplay() {
+  document.getElementById("nomor-sekarang").innerText = current;
+}
+updateDisplay();
