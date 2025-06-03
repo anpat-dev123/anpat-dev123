@@ -1,1 +1,65 @@
-<!DOCTYPE html><html><head><title>Anpat</title></head><body><h1>Welcome to Anpat</h1></body></html>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anpat - Ambil Nomor Antrian</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 40px; background: #f0f8ff; }
+    h1 { color: #007BFF; }
+    button {
+      background-color: #007BFF;
+      color: white;
+      font-size: 18px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover { background-color: #0056b3; }
+    #status { margin-top: 20px; font-weight: bold; color: green; }
+  </style>
+</head>
+<body>
+  <h1>Anpat - Ambil Nomor Antrian</h1>
+  <p>Silakan klik tombol di bawah ini untuk mengambil nomor antrian.</p>
+  <button onclick="ambilNomor()">Ambil Nomor</button>
+  <div id="status"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBCJRFTrRqF2Fi_gx7Z9YaCTlWi91Y_awk",
+      authDomain: "anpat-9409c.firebaseapp.com",
+      databaseURL: "https://anpat-9409c-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "anpat-9409c",
+      storageBucket: "anpat-9409c.appspot.com",
+      messagingSenderId: "648747908613",
+      appId: "1:648747908613:web:e16e4f6997fc4d3f22e66c",
+      measurementId: "G-JF2SP7M7SJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getDatabase(app);
+
+    function ambilNomor() {
+      const no = Math.floor(Math.random() * 1000);  // nomor acak
+      const waktu = new Date().toISOString();
+      set(ref(db, 'antrian/' + no), {
+        nama: "Pembeli",
+        waktu: waktu,
+        status: "menunggu"
+      }).then(() => {
+        document.getElementById('status').innerText = "✅ Berhasil ambil nomor antrian: " + no;
+      }).catch((error) => {
+        document.getElementById('status').innerText = "❌ Gagal: " + error;
+      });
+    }
+  </script>
+</body>
+</html>
